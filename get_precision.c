@@ -1,42 +1,53 @@
 #include "main.h"
 
 /**
- * get_precision - Calculates the precision for printing
+ * my_get_precision - Calculates the precision for printing
  * @format: Formatted string in which to print the arguments
- * @i: List of arguments to be printed.
- * @list: list of arguments.
+ * @index: Pointer to the current index in the format string
+ * @arg_list: List of arguments to be printed
  *
  * Return: Precision.
  */
-int get_precision(const char *format, int *i, va_list list)
+int my_get_precision(const char *format, int *index, va_list arg_list)
 {
-	int curr_i = *i + 1;
-	int precision = -1;
+    int curr_index = *index + 1;
+    int precision = -1;
 
-	if (format[curr_i] != '.')
-		return (precision);
+    if (format[curr_index] != '.')
+        return (precision);
 
-	precision = 0;
+    precision = 0;
 
-	for (curr_i += 1; format[curr_i] != '\0'; curr_i++)
-	{
-		if (is_digit(format[curr_i]))
-		{
-			precision *= 10;
-			precision += format[curr_i] - '0';
-		}
-		else if (format[curr_i] == '*')
-		{
-			curr_i++;
-			precision = va_arg(list, int);
-			break;
-		}
-		else
-			break;
-	}
+    for (curr_index += 1; format[curr_index] != '\0'; curr_index++)
+    {
+        if (my_is_digit(format[curr_index]))
+        {
+            precision *= 10;
+            precision += format[curr_index] - '0';
+        }
+        else if (format[curr_index] == '*')
+        {
+            curr_index++;
+            precision = va_arg(arg_list, int);
+            break;
+        }
+        else
+            break;
+    }
 
-	*i = curr_i - 1;
+    *index = curr_index - 1;
 
-	return (precision);
+    return (precision);
+}
+
+/**
+ * my_is_digit - Check if a character is a digit (0-9)
+ * @c: The character to be checked
+ *
+ * Return: 1 if the character is a digit, 0 otherwise.
+ */
+int my_is_digit(char c)
+{
+    return (c >= '0' && c <= '9');
 }
 
